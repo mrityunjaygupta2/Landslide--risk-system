@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sikkim Landslide Risk Monitoring System</title>
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🌄 Sikkim Landslide Risk Monitoring System</h1>
+
+        <p class="subtitle">
+            AI-Based Early Warning and Landslide Risk Prediction
+           
+        </p>
+      
+        <div class="card">
+  <h2>🗺️ Sikkim Interactive Map</h2>
+
+  <p>
+    Map par kisi location par click karke location select karein.
+  </p>
+
+  <div
+    id="sikkimMap"
+    style="
+      width: 100%;
+      height: 450px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 15px;
+    "
+  ></div>
+  <!-- ========================================
+     RISK STATISTICS
+======================================== -->
+
+<div class="card">
+
+    <h2>📊 Sikkim Risk Statistics</h2>
+
+    <div id="riskStatistics">
+
+        <p>⏳ Loading risk statistics...</p>
+
+    </div>
+
+</div>
+<div class="card">
+
+    <h2>🤖 AI Risk Monitoring Dashboard</h2>
+
+    <div id="aiRiskDashboard">
+
+        <p>⏳ Loading AI risk dashboard...</p>
+
+    </div>
+
+</div>
+<div class="card">
+    <h2>📈 Risk Distribution</h2>
+
+    <div style="
+        max-width: 250px;
+        margin: auto;
+    ">
+        <canvas id="riskChart"></canvas>
+    </div>
+</div>
+<div class="card">
+    <h2>🤖 AI Model Performance</h2>
+
+    <div id="modelPerformance">
+        <p>Accuracy: <strong>88.00%</strong></p>
+        <p>Precision: <strong>88.57%</strong></p>
+        <p>Recall: <strong>86.11%</strong></p>
+        <p>F1 Score: <strong>87.32%</strong></p>
+    </div>
+
+    <p style="margin-top: 12px;">
+        The model was validated using the Sikkim landslide
+        environmental training dataset.
+    </p>
+</div>
+<!-- ==========================================
+     RISK MONITORING TREND
+========================================== -->
+
+<div class="card">
+    <h2>📈 Risk Monitoring Trend</h2>
+
+    <p>
+        Tracks changes in predicted landslide risk
+        over time for the selected location.
+    </p>
+
+    <canvas id="riskTrendChart"></canvas>
+
+    <div id="riskTrendStatus" style="margin-top: 10px;">
+        <p>📊 Waiting for monitoring data...</p>
+    </div>
+</div>
+<!-- ========================================
+     EARLY WARNING ALERT
+======================================== -->
+
+<div class="card">
+
+    <h2>🚨 Early Warning Alert</h2>
+
+    <div id="earlyWarning">
+
+        <p>
+            📍 Select a location on the map
+            to check the warning status.
+        </p>
+
+    </div>
+
+</div>
+<div class="card">
+    <h2>🌧️ Rainfall Condition</h2>
+
+    <div id="rainfallCondition">
+        <p>📍 Select a location to check rainfall condition.</p>
+    </div>
+</div>
+
+  <p id="selectedLocation" style="margin-top: 12px;">
+    📍  Select a location on the map
+  </p>
+</div>
+<!-- ========================================
+     CURRENT SELECTED LOCATION PANEL
+======================================== -->
+
+<div id="currentLocationPanel"
+     style="
+        margin-top: 20px;
+        padding: 18px;
+        border-radius: 12px;
+        background: #f5f7fa;
+        border: 1px solid #ddd;
+     ">
+
+    <h3>📍 Current Selected Location</h3>
+
+    <p>
+        <strong>Latitude:</strong>
+        <span id="currentLatitude">--</span>
+    </p>
+
+    <p>
+        <strong>Longitude:</strong>
+        <span id="currentLongitude">--</span>
+    </p>
+
+    <hr>
+
+    <p>
+        🏔️ <strong>Elevation:</strong>
+        <span id="currentElevation">--</span> m
+    </p>
+
+    <p>
+        📐 <strong>Slope:</strong>
+        <span id="currentSlope">--</span>°
+    </p>
+
+    <p>
+        💧 <strong>Soil Moisture:</strong>
+        <span id="currentSoilMoisture">--</span>
+    </p>
+
+    <p>
+        🌧️ <strong>Rainfall:</strong>
+        <span id="currentRainfall">--</span> mm
+    </p>
+
+    <hr>
+
+    <p>
+        🤖 <strong>Landslide Probability:</strong>
+        <span id="currentProbability">--</span>
+    </p>
+
+    <p>
+        🚨 <strong>Risk Level:</strong>
+        <span id="currentRiskLevel">--</span>
+    </p>
+
+</div>
+        <div class="card">
+
+            <h2>Environmental Parameters</h2>
+
+            <div class="form-grid">
+
+                <div>
+                    <label>Elevation (m)</label>
+                    <input type="number" id="elevation" value="1800">
+                </div>
+
+                <div>
+                    <label>Slope (°)</label>
+                    <input type="number" id="slope" value="35">
+                </div>
+
+                <div>
+                    <label>Soil Moisture</label>
+                    <input type="number" id="soil_moisture" step="0.01" value="0.25">
+                </div>
+
+                <div>
+                    <label>Rainfall</label>
+                    <input type="number" id="rainfall" value="1200">
+                </div>
+
+                <div>
+                    <label>Landcover</label>
+                    <input type="number" id="landcover" value="5">
+                </div>
+
+                <div>
+                    <label>Latitude</label>
+                    <input type="number" id="latitude" step="0.0001" value="27.35">
+                </div>
+
+                <div>
+                    <label>Longitude</label>
+                    <input type="number" id="longitude" step="0.0001" value="88.60">
+                </div>
+
+            </div>
+
+            <button onclick="predictRisk()">
+                🔍 Predict Landslide Risk
+            </button>
+
+            <div id="loading" class="loading">
+                Predicting...
+            </div>
+
+            <div id="result" class="result">
+
+                <h2>Risk Result</h2>
+
+                <p>
+                    Prediction:
+                    <strong id="prediction">-</strong>
+                </p>
+
+                <p>
+                    Landslide Probability:
+                    <strong id="probability">-</strong>
+                </p>
+
+                <p>
+                    Risk Level:
+                    <strong id="risk">-</strong>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
