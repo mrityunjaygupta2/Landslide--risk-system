@@ -13,4 +13,4 @@ timeout /t 8 >nul
 start "" "%~dp0\ml\frontend\index.html"
 
 echo System Started Successfully!
-pause
+pauseU
